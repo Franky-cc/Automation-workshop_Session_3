@@ -2,22 +2,16 @@
 config:
   target: "https://api.todoist.com"
   phases:
-    - duration: 10
-      arrivalRate: 3
+    - duration: 2
+      arrivalRate: 1
       name: "Phase 1"
-    - duration: 20
-      arrivalRate: 6
-      name: "Phase 2"
-    - duration: 30
-      arrivalRate: 10
-      name: "Phase 3"
   defaults:
    headers:
       Authorization: Bearer {{ $processEnvironment.TOKEN }}
       Content-Type: application/json
-  ##processor: "./myProcessor.js"
 scenarios:
-  - flow:
+   - name: "Create a project with a Task"
+     flow:
       - post:
          url: "/rest/v1/projects"
          json:
@@ -51,16 +45,12 @@ scenarios:
          json:
            content: "Updating Task" 
            priority: 2
-      - log: "task updated"
       - post:
          url: "/rest/v1/tasks/{{taskId}}/close"
-      - log: "task closed"
       - post:
          url: "/rest/v1/tasks/{{taskId}}/reopen"
-      - log: "task reopened"
       - delete:
          url: "/rest/v1/tasks/{{taskId}}"
-      - log: "task deleted"
       - delete:
          url: "/rest/v1/projects/{{projectId}}"
       - log: "project deleted"

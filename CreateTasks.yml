@@ -1,0 +1,43 @@
+config:
+  target: "https://api.todoist.com"
+  phases:
+    - duration: 15
+      arrivalRate: 2
+      name: "Phase 1"
+    - duration: 10
+      arrivalRate: 1
+      name: "Phase 2"
+  defaults:
+   headers:
+      Authorization: Bearer {{ $processEnvironment.TOKEN }}
+      Content-Type: application/json
+scenarios:
+  - name: "Task Create,Get,Update,Change status and Delete"
+    flow:
+      - get:
+         url: "/rest/v1/tasks"
+      - post:
+         url: "/rest/v1/tasks"
+         json:
+           content: "New Task-session 3" 
+           due_string: "tomorrow at 12:00"
+           due_lang: "en"
+           priority: 3
+         capture:
+           json: "$.id"
+           as: "taskId"
+      - get:
+         url: "/rest/v1/tasks/{{taskId}}"
+      - post:
+         url: "/rest/v1/tasks/{{taskId}}"
+         json:
+           content: "Updating Task" 
+           priority: 2
+      - post:
+         url: "/rest/v1/tasks/{{taskId}}/close"
+      - post:
+         url: "/rest/v1/tasks/{{taskId}}/reopen"
+      - delete:
+         url: "/rest/v1/tasks/{{taskId}}"
+      
+  # For more information: https://artillery.io/docs/script-reference/

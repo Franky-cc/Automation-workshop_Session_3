@@ -1,0 +1,34 @@
+config:
+  target: "https://api.todoist.com"
+  processor: "./fakertest.js"
+  phases:
+    - duration: 5
+      arrivalRate: 2
+      name: "Phase 1"
+    - duration: 6
+      arrivalRate: 4
+      name: "Phase 2"
+  defaults:
+   headers:
+      Authorization: Bearer {{ $processEnvironment.TOKEN }}
+      Content-Type: application/json
+scenarios:
+   - name: "Task creation using faker"
+     flow:
+      # call createTask() to create random data
+      - function: "createTask"
+      - post:
+         url: "/rest/v1/tasks"
+         json:
+              content: "{{content}}"
+              due_string: "{{due_string}}"
+              due_lang: "{{due_lang}}"
+              priority: "{{priority}}"
+         capture:
+           json: "$.id"
+           as: "taskId"
+      - log: "Sent a request with {{ content }}, {{due_string}}, {{due_lang}},{{priority}}, task id created {{ taskId }}"
+      - get:
+         url: "/rest/v1/tasks/{{taskId}}"
+      - delete:
+         url: "/rest/v1/tasks/{{taskId}}"
