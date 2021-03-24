@@ -15,7 +15,7 @@ Scenarios covered: Create a new project that will contain the following requests
 
 #Instalation and execution for this project 
 
-Download the project 
+Download the ZIP project 
 
 #Install Artillery via npm:
 
@@ -41,9 +41,11 @@ Download the project
 
 # To create a project from scratch 
 #Create a node project via npm
+
 *$ npm init*
 
 #Install Artillery via npm:
+
 *$ npm i artillery*
 
 #Create a yml file
@@ -58,6 +60,7 @@ add the Artillery.io snippets and click Ctrl+space to use a BasicConfig template
 #Add your Todoist project
 
 #Add your API token on windows type  
+
 *$ setx TOKEN "your token"*
 
 #Finally add your scenarios on the performance.yml file
