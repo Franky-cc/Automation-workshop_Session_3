@@ -14,12 +14,15 @@ Scenarios covered: Create a new project that will contain the following requests
 - Delete a task
 
 #Instalation and execution for this project 
+
 Download the project 
 
 #Install Artillery via npm:
+
 *npm i artillery*
 
 #Install fakers plugin via npm:
+
 *npm i faker*
 
 #Type on terminal the following line to execute those tests automatically using the CLI
@@ -44,7 +47,9 @@ npm init
 *$ npm i artillery*
 
 #Create a yml file
+
 for Mac typen *touch performance.yml*
+
 for Windows type *fsutil file createnew performance.yml 0*
 
 #Add a template using artillery plugin
