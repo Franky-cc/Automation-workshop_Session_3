@@ -1,0 +1,22 @@
+{
+  "name": "automation-workshop_session_3",
+  "version": "1.0.0",
+  "description": "Performance testing workshop session 3",
+  "main": "index.js",
+  "scripts": {
+    "test": "artillery run --output results/report.json performance.yml && artillery report --output results/report.html results/report.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Franky-cc/Automation-workshop_Session_3.git"
+  },
+  "author": "Francisca Chulim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Franky-cc/Automation-workshop_Session_3/issues"
+  },
+  "homepage": "https://github.com/Franky-cc/Automation-workshop_Session_3#readme",
+  "dependencies": {
+    "artillery": "^1.6.2"
+  }
+}

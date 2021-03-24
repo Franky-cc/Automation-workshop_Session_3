@@ -1,0 +1,68 @@
+
+config:
+  target: "https://api.todoist.com"
+  phases:
+    - duration: 10
+      arrivalRate: 3
+      name: "Phase 1"
+    - duration: 20
+      arrivalRate: 6
+      name: "Phase 2"
+    - duration: 30
+      arrivalRate: 10
+      name: "Phase 3"
+  defaults:
+   headers:
+      Authorization: Bearer {{ $processEnvironment.TOKEN }}
+      Content-Type: application/json
+  ##processor: "./myProcessor.js"
+scenarios:
+  - flow:
+      - post:
+         url: "/rest/v1/projects"
+         json:
+           name: "Adding project with Artillery"
+         capture:
+           json: "$.id"
+           as: "projectId"
+      - log: "Current project id {{projectId}}"
+      - get:
+         url: "/rest/v1/projects/{{projectId}}"
+         match:
+          json: "$.id"
+          value: "{{projectId}}"
+      - get:
+         url: "/rest/v1/tasks"
+      - post:
+         url: "/rest/v1/tasks"
+         json:
+           content: "New Task-session 3" 
+           due_string: "tomorrow at 12:00"
+           due_lang: "en"
+           priority: 3
+           project_id: "{{ projectId }}"
+         capture:
+           json: "$.id"
+           as: "taskId"
+      - get:
+         url: "/rest/v1/tasks/{{taskId}}"
+      - post:
+         url: "/rest/v1/tasks/{{taskId}}"
+         json:
+           content: "Updating Task" 
+           priority: 2
+      - log: "task updated"
+      - post:
+         url: "/rest/v1/tasks/{{taskId}}/close"
+      - log: "task closed"
+      - post:
+         url: "/rest/v1/tasks/{{taskId}}/reopen"
+      - log: "task reopened"
+      - delete:
+         url: "/rest/v1/tasks/{{taskId}}"
+      - log: "task deleted"
+      - delete:
+         url: "/rest/v1/projects/{{projectId}}"
+      - log: "project deleted"
+      
+  # For more information: https://artillery.io/docs/script-reference/
